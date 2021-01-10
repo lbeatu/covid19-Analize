@@ -1,5 +1,5 @@
+/* eslint-disable jsx-a11y/alt-text */
 import { ArrowDownOutlined, ArrowUpOutlined } from '@ant-design/icons';
-import Avatar from '@material-ui/core/Avatar';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
@@ -10,17 +10,18 @@ import Paper from '@material-ui/core/Paper';
 import Snackbar from '@material-ui/core/Snackbar';
 import { makeStyles } from '@material-ui/core/styles';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
-import FavoriteIcon from '@material-ui/icons/Favorite';
-import MoreVertIcon from '@material-ui/icons/MoreVert';
-import ShareIcon from '@material-ui/icons/Share';
 import MuiAlert from '@material-ui/lab/Alert';
-import { Col, Row, Statistic } from 'antd';
+import { Button, Col, Row, Statistic, Tooltip } from 'antd';
 import clsx from 'clsx';
 import React, { useContext, useEffect, useState } from 'react';
+import covid19 from '../../assets/resources/covid-19.png';
+import mask from '../../assets/resources/mask.png';
+import stayHome from '../../assets/resources/stay-at-home.png';
+import world from '../../assets/resources/world.png';
 import { Countries } from '../../constants/countries';
 import CovidContext from '../../context/covid19API/covidContext';
 import Covid19Cart from '../Covid19Chart';
-import { getData } from '../Covid19Chart/utils';
+import RegressionModal from '../RegressionModal';
 import './style.scss';
 
 function Alert(props) {
@@ -80,8 +81,8 @@ const useStyles = makeStyles((theme) => ({
 export const Country = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
-  const [graphData, setGraphData] = useState(null);
 
   const handleExpandClick = () => {
     if (Slug) {
@@ -103,17 +104,11 @@ export const Country = () => {
     getAllDataByCountry(Slug);
   }, [country]);
 
-  useEffect(() => {
-    getData().then((data) => {
-      console.log('🚀 ~ file: index.jsx ~ line 108 ~ getData ~ data', data);
-      setGraphData(data);
-    });
-  }, []);
-
   const { Country, CountryCode, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date, Slug } = country;
 
   return (
     <>
+      <RegressionModal isModalVisible={isModalVisible} handleCancel={() => setIsModalVisible(!isModalVisible)} />
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert onClose={handleClose} severity="error">
           Lütfen Ülke seçiniz
@@ -121,29 +116,31 @@ export const Country = () => {
       </Snackbar>
       <Card className={classes.root}>
         <CardHeader
-          avatar={
-            <Avatar aria-label="recipe" className={classes.avatar}>
-              {CountryCode}
-            </Avatar>
-          }
+          avatar={CountryCode ? <img src={`https://www.countryflags.io/${CountryCode}/shiny/64.png`} /> : <img className="w-header-icon" src={world}></img>}
           action={
-            <IconButton aria-label="settings">
-              <MoreVertIcon />
-            </IconButton>
+            <>
+              <Button style={{ marginTop: '25px' }} onClick={() => setIsModalVisible(!isModalVisible)} danger>
+                Regresyon Analizi
+              </Button>
+              {'  '}
+              <Button style={{ marginTop: '25px' }} onClick={() => setIsModalVisible(!isModalVisible)} type="primary">
+                Eski veriler
+              </Button>
+            </>
           }
           title={<strong style={{ fontSize: '40px' }}>{Countries.some((x) => x.ISO2 === CountryCode) ? Countries.find((x) => x.ISO2 === CountryCode).country : Country ? Country : 'Dünya'} </strong>}
           subheader={Date}
         />
-        {console.log('country', allDataByCountry)}
+
         <CardContent>
           <Row>
             <Col sm={12} className={classes.col}>
               <p className={classes.ColTitle}>Bugün</p>
               <div className={classes.paper}>
-                <Paper elevation={3} style={{ background: `${NewConfirmed - NewRecovered < 0 ? '#cf1322' : '#3f8600'}` }}>
+                <Paper elevation={3} style={{ background: `#cf1322` }}>
                   <Statistic className={classes.statistic} title={<h1 className={classes.statisticTitle}>Yeni Vaka Sayısı</h1>} value={NewConfirmed} precision={0} valueStyle={{ color: '#fff' }} prefix={NewConfirmed - NewRecovered < 0 ? <ArrowDownOutlined /> : <ArrowUpOutlined />} />
                 </Paper>
-                <Paper elevation={3} style={{ background: `${NewConfirmed - NewRecovered > 0 ? '#cf1322' : '#3f8600'}` }}>
+                <Paper elevation={3} style={{ background: `#3f8600` }}>
                   <Statistic className={classes.statistic} title={<h1 className={classes.statisticTitle}>İyileşen Hasta Sayısı</h1>} value={NewRecovered} precision={0} valueStyle={{ color: '#fff' }} prefix={NewConfirmed - NewRecovered > 0 ? <ArrowDownOutlined /> : <ArrowUpOutlined />} />
                 </Paper>
                 <Paper elevation={3} style={{ background: `${'#212121'}` }}>
@@ -154,10 +151,10 @@ export const Country = () => {
             <Col sm={12} className={classes.col}>
               <p className={classes.ColTitle}>Toplam</p>
               <div className={classes.paper}>
-                <Paper elevation={3} style={{ background: `${TotalConfirmed - TotalRecovered > 0 ? '#cf1322' : '#3f8600'}` }}>
+                <Paper elevation={3} style={{ background: `#cf1322` }}>
                   <Statistic className={classes.statistic} title={<h1 className={classes.statisticTitle}>Vaka Sayısı</h1>} value={TotalConfirmed} precision={0} valueStyle={{ color: '#fff' }} prefix={NewConfirmed - NewRecovered > 0 ? <ArrowDownOutlined /> : <ArrowUpOutlined />} />
                 </Paper>
-                <Paper elevation={3} style={{ background: `${TotalConfirmed - TotalRecovered < 0 ? '#cf1322' : '#3f8600'}` }}>
+                <Paper elevation={3} style={{ background: `#3f8600` }}>
                   <Statistic className={classes.statistic} title={<h1 className={classes.statisticTitle}>İyileşen Hasta Sayısı</h1>} value={TotalRecovered} precision={0} valueStyle={{ color: '#fff' }} prefix={NewConfirmed - NewRecovered > 0 ? <ArrowUpOutlined /> : <ArrowDownOutlined />} />
                 </Paper>
                 <Paper elevation={3} style={{ background: `${'#212121'}` }}>
@@ -168,12 +165,16 @@ export const Country = () => {
           </Row>
         </CardContent>
         <CardActions disableSpacing>
-          <IconButton aria-label="add to favorites">
-            <FavoriteIcon />
-          </IconButton>
-          <IconButton aria-label="share">
-            <ShareIcon />
-          </IconButton>
+          <Tooltip placement="bottom" title={'Koronavirüs hastalığı (COVID-19).'}>
+            <img className="w-icon" src={covid19}></img>
+          </Tooltip>
+          <Tooltip placement="bottom" title={'Sağlığınız için Evde Kalın. #StayHome'}>
+            <img className="w-icon" src={stayHome}></img>
+          </Tooltip>
+          <Tooltip placement="bottom" title={'Maskesiz dışarı çıkmayın.'}>
+            <img className="w-icon" src={mask}></img>
+          </Tooltip>
+
           <IconButton
             className={clsx(classes.expand, {
               [classes.expandOpen]: expanded,
