@@ -1,14 +1,13 @@
 import { Modal } from 'antd';
 import React from 'react';
+import Regression from '../Regression';
 
-const RegressionModal = ({isModalVisible,handleOk,handleCancel}) => {
-    return (
-        <Modal title="Basic Modal" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-        <p>Some contents...</p>
-      </Modal>
-    )
-}
+const RegressionModal = ({ isModalVisible, data, handleCancel, handleOk }) => {
+  return (
+    <Modal title="Regresyon Analizi" width={900} visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+      {data && <Regression data={data.map((x) => [x.AAPLClose, x.date.getMonth()])} regression={true} />}
+    </Modal>
+  );
+};
 
-export default RegressionModal
+export default RegressionModal;

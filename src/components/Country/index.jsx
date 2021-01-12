@@ -83,7 +83,7 @@ export const Country = () => {
   const [expanded, setExpanded] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
-
+  let regData = [];
   const handleExpandClick = () => {
     if (Slug) {
       setExpanded(!expanded);
@@ -102,13 +102,14 @@ export const Country = () => {
 
   useEffect(() => {
     getAllDataByCountry(Slug);
+    regData.push();
   }, [country]);
 
   const { Country, CountryCode, NewConfirmed, TotalConfirmed, NewDeaths, TotalDeaths, NewRecovered, TotalRecovered, Date, Slug } = country;
 
   return (
     <>
-      <RegressionModal isModalVisible={isModalVisible} handleCancel={() => setIsModalVisible(!isModalVisible)} />
+      <RegressionModal isModalVisible={isModalVisible} handleCancel={() => setIsModalVisible(!isModalVisible)} data={allDataByCountry} />
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert onClose={handleClose} severity="error">
           Lütfen Ülke seçiniz
@@ -174,17 +175,18 @@ export const Country = () => {
           <Tooltip placement="bottom" title={'Maskesiz dışarı çıkmayın.'}>
             <img className="w-icon" src={mask}></img>
           </Tooltip>
-
-          <IconButton
-            className={clsx(classes.expand, {
-              [classes.expandOpen]: expanded,
-            })}
-            onClick={handleExpandClick}
-            aria-expanded={expanded}
-            aria-label="show more"
-          >
-            <ExpandMoreIcon />
-          </IconButton>
+          <Tooltip placement="left" title={'Ayrıntılı grafik için tıklayınız.'}>
+            <IconButton
+              className={clsx(classes.expand, {
+                [classes.expandOpen]: expanded,
+              })}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+            >
+              <ExpandMoreIcon />
+            </IconButton>
+          </Tooltip>
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>

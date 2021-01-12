@@ -1,10 +1,12 @@
 //regressions.js
 import regression from 'regression';
-const calculateRegression = (formattedData) => {
+export const calculateRegression = (formattedData) => {
   let regressionData = [];
-  regressionData = formattedData.map((el) => {
-    return [parseFloat(el.x), el.y];
+  regressionData = formattedData.map((x) => {
+    return [parseFloat(x[0]), x[1]];
   });
+  console.log('object', regressionData);
+
   const result = regression.linear(regressionData);
   const gradient = result.equation[0];
   const yIntercept = result.equation[1];

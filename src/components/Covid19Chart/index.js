@@ -91,44 +91,46 @@ class Covid19Chart extends React.Component {
             ]}
           />
         </Col>
-        <Col sm={24}>
-          <ChartCanvas ratio={ratio} width={width} height={400} margin={{ left: 70, right: 70, top: 20, bottom: 30 }} type={type} pointsPerPxThreshold={1} seriesName="MSFT" data={datas} xAccessor={xAccessor} displayXAccessor={displayXAccessor} xScale={xScale} xExtents={xExtents}>
-            <Chart id={1} yExtents={(d) => [d.high, d.low, d.AAPLClose, d.GEClose]}>
-              <HoverTooltip
-                yAccessor={ema50.accessor()}
-                tooltipContent={tooltipContent([
-                  {
-                    label: `${ema20.type()}(${ema20.options().windowSize})`,
-                    value: (d) => numberFormat(ema20.accessor()(d)),
-                    stroke: ema20.stroke(),
-                  },
-                  {
-                    label: `${ema50.type()}(${ema50.options().windowSize})`,
-                    value: (d) => numberFormat(ema50.accessor()(d)),
-                    stroke: ema50.stroke(),
-                  },
-                ])}
-                fontSize={15}
-              />
-              <XAxis axisAt="bottom" orient="bottom" />
-              <YAxis
-                axisAt="right"
-                orient="right"
-                // tickInterval={5}
-                // tickValues={[40, 60]}
-                ticks={5}
-              />
+        <Row>
+          <Col sm={24}>
+            <ChartCanvas ratio={ratio} width={width} height={400} margin={{ left: 70, right: 70, top: 20, bottom: 30 }} type={type} pointsPerPxThreshold={1} seriesName="MSFT" data={datas} xAccessor={xAccessor} displayXAccessor={displayXAccessor} xScale={xScale} xExtents={xExtents}>
+              <Chart id={1} yExtents={(d) => [d.high, d.low, d.AAPLClose, d.GEClose]}>
+                <HoverTooltip
+                  yAccessor={ema50.accessor()}
+                  tooltipContent={tooltipContent([
+                    {
+                      label: `${ema20.type()}(${ema20.options().windowSize})`,
+                      value: (d) => numberFormat(ema20.accessor()(d)),
+                      stroke: ema20.stroke(),
+                    },
+                    {
+                      label: `${ema50.type()}(${ema50.options().windowSize})`,
+                      value: (d) => numberFormat(ema50.accessor()(d)),
+                      stroke: ema50.stroke(),
+                    },
+                  ])}
+                  fontSize={15}
+                />
+                <XAxis axisAt="bottom" orient="bottom" />
+                <YAxis
+                  axisAt="right"
+                  orient="right"
+                  // tickInterval={5}
+                  // tickValues={[40, 60]}
+                  ticks={5}
+                />
 
-              <LineSeries yAccessor={(d) => d.AAPLClose} stroke="#3F8600" strokeDasharray="Dot" />
-              <ScatterSeries yAccessor={(d) => d.AAPLClose} marker={SquareMarker} markerProps={{ width: 6, stroke: '#3F8600', fill: '#3F8600' }} />
-              <LineSeries yAccessor={(d) => d.GEClose} stroke="#CF1322" />
-              <ScatterSeries yAccessor={(d) => d.GEClose} marker={TriangleMarker} markerProps={{ width: 8, stroke: '#CF1322', fill: '#CF1322' }} />
-              <LineSeries yAccessor={(d) => d.close} strokeDasharray="LongDash" />
-              <ScatterSeries yAccessor={(d) => d.close} marker={CircleMarker} markerProps={{ r: 3 }} />
-              <OHLCTooltip forChart={1} origin={[-40, 0]} />
-            </Chart>
-          </ChartCanvas>
-        </Col>
+                <LineSeries yAccessor={(d) => d.AAPLClose} stroke="#3F8600" strokeDasharray="Dot" />
+                <ScatterSeries yAccessor={(d) => d.AAPLClose} marker={SquareMarker} markerProps={{ width: 6, stroke: '#3F8600', fill: '#3F8600' }} />
+                <LineSeries yAccessor={(d) => d.GEClose} stroke="#CF1322" />
+                <ScatterSeries yAccessor={(d) => d.GEClose} marker={TriangleMarker} markerProps={{ width: 8, stroke: '#CF1322', fill: '#CF1322' }} />
+                <LineSeries yAccessor={(d) => d.close} strokeDasharray="LongDash" />
+                <ScatterSeries yAccessor={(d) => d.close} marker={CircleMarker} markerProps={{ r: 3 }} />
+                <OHLCTooltip forChart={1} origin={[-40, 0]} />
+              </Chart>
+            </ChartCanvas>
+          </Col>
+        </Row>
       </Row>
     );
   }
