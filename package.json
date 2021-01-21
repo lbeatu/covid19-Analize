@@ -17,6 +17,7 @@
     "d3-time-format": "^3.0.0",
     "locale-js": "^1.1.1",
     "moment": "^2.29.1",
+    "netlify-cli": "^3.1.0",
     "node-sass": "4.14.1",
     "react": "^17.0.1",
     "react-auto-translate": "^0.0.6",
@@ -33,7 +34,9 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

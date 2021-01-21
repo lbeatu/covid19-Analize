@@ -7,3 +7,4 @@ export const SET_LOADING = 'SET_LOADING';
 export const SET_ALERT = 'SET_ALERT';
 export const REMOVE_ALERT = 'REMOVE_ALERT';
 export const SET_DATERANGE = 'SET_DATERANGE';
+export const GET_ALLDATA_TABLE = 'GET_ALLDATA_TABLE';

@@ -1,4 +1,4 @@
-import { Button, Col, PageHeader, Row, Tag } from 'antd';
+import { Alert, Button, Col, PageHeader, Row, Tag } from 'antd';
 import { format } from 'd3-format';
 import { timeFormat } from 'd3-time-format';
 import PropTypes from 'prop-types';
@@ -72,9 +72,8 @@ class Covid19Chart extends React.Component {
             title="Günlük Vaka Analizi"
             subTitle={
               <div>
-                <Tag color="orange">20.01.12</Tag>
-                <Tag color="red">{'state.AAPLClose'}</Tag>
-                <Tag color="blue">volcano</Tag>
+                <Tag color="orange">{country.CountryCode}</Tag>
+                <Tag color="blue">{country.Country}</Tag>
               </div>
             }
             extra={[
@@ -91,7 +90,7 @@ class Covid19Chart extends React.Component {
             ]}
           />
         </Col>
-        <Row>
+        <Row gutter={[10, 10]}>
           <Col sm={24}>
             <ChartCanvas ratio={ratio} width={width} height={400} margin={{ left: 70, right: 70, top: 20, bottom: 30 }} type={type} pointsPerPxThreshold={1} seriesName="MSFT" data={datas} xAccessor={xAccessor} displayXAccessor={displayXAccessor} xScale={xScale} xExtents={xExtents}>
               <Chart id={1} yExtents={(d) => [d.high, d.low, d.AAPLClose, d.GEClose]}>
@@ -129,6 +128,23 @@ class Covid19Chart extends React.Component {
                 <OHLCTooltip forChart={1} origin={[-40, 0]} />
               </Chart>
             </ChartCanvas>
+          </Col>
+          <Col sm={24}>
+            <Row gutter={[10, 10]}>
+              <Col sm={24}>
+                <Alert
+                  message="Grafik Detayları"
+                  showIcon
+                  description="Günlük vaka sayısı ve  iyileşen sayısı arasındaki ilişkiyi yukarıdaki grafikten inceleyebilirsiniz. İstediğiniz tarih aralığına ait verileri getirmek için Tarih 
+              sıkalasından, Tarih aralığı seçip verileri getir butonuna basmanız yeterlidir."
+                  type="success"
+                />
+              </Col>
+
+              <Col sm={24}>
+                <Alert message="Uyarı" showIcon description="Grafikte verilerin gelmediği durumda sayfayı yenileyiniz." type="warning" />
+              </Col>
+            </Row>
           </Col>
         </Row>
       </Row>

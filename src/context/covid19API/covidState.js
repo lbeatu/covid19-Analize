@@ -1,7 +1,7 @@
 import axios from 'axios';
 import moment from 'moment';
 import React, { useReducer } from 'react';
-import { GET_ALLDATA, GET_COUNTRIES, SEARCH_COUNTRIES, SET_DATERANGE, SET_LOADING } from '../types';
+import { GET_ALLDATA, GET_ALLDATA_TABLE, GET_COUNTRIES, SEARCH_COUNTRIES, SET_DATERANGE, SET_LOADING } from '../types';
 import CovidContext from './covidContext';
 import CovidReducer from './covidReducer';
 
@@ -11,6 +11,7 @@ const CovidState = (props) => {
     countries: [],
     country: {},
     allDataByCountry: [],
+    allDataByCountryForTable: [],
     loading: false,
   };
   const [state, dispatch] = useReducer(CovidReducer, initialState);
@@ -57,9 +58,12 @@ const CovidState = (props) => {
     axios
       .get(`https://api.covid19api.com/country/${Slug}?from=${state.dateRange[0]}T00:00:00Z&to=${state.dateRange[1]}T00:00:00Z`)
       .then(function (response) {
-        console.log('asdasf', response.data);
         dispatch({
           type: GET_ALLDATA,
+          payload: response.data,
+        });
+        dispatch({
+          type: GET_ALLDATA_TABLE,
           payload: response.data,
         });
       })
@@ -83,6 +87,7 @@ const CovidState = (props) => {
         country: state.country,
         loading: state.loading,
         allDataByCountry: state.allDataByCountry,
+        allDataByCountryForTable: state.allDataByCountryForTable,
         dateRange: state.dateRange,
         searchCountry,
         getCountries,

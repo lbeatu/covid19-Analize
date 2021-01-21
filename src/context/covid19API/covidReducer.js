@@ -1,5 +1,5 @@
 /* eslint-disable import/no-anonymous-default-export */
-import { CLEAR_COUNTRIES, GET_ALLDATA, GET_COUNTRIES, GET_COUNTRY, SEARCH_COUNTRIES, SET_DATERANGE, SET_LOADING } from '../types';
+import { CLEAR_COUNTRIES, GET_ALLDATA, GET_ALLDATA_TABLE, GET_COUNTRIES, GET_COUNTRY, SEARCH_COUNTRIES, SET_DATERANGE, SET_LOADING } from '../types';
 
 export default (state, action) => {
   switch (action.type) {
@@ -38,6 +38,12 @@ export default (state, action) => {
       return {
         ...state,
         countries: action.payload,
+        loading: false,
+      };
+    case GET_ALLDATA_TABLE:
+      return {
+        ...state,
+        allDataByCountryForTable: action.payload,
         loading: false,
       };
     case SET_DATERANGE:

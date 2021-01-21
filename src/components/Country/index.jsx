@@ -21,7 +21,7 @@ import world from '../../assets/resources/world.png';
 import { Countries } from '../../constants/countries';
 import CovidContext from '../../context/covid19API/covidContext';
 import Covid19Cart from '../Covid19Chart';
-import RegressionModal from '../RegressionModal';
+import ExDatasModal from '../ExDatasModal';
 import './style.scss';
 
 function Alert(props) {
@@ -82,6 +82,7 @@ export const Country = () => {
   const classes = useStyles();
   const [expanded, setExpanded] = useState(false);
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [isExModalVisible, setExIsModalVisible] = useState(false);
   const [open, setOpen] = useState(false);
   let regData = [];
   const handleExpandClick = () => {
@@ -109,7 +110,7 @@ export const Country = () => {
 
   return (
     <>
-      <RegressionModal isModalVisible={isModalVisible} handleCancel={() => setIsModalVisible(!isModalVisible)} data={allDataByCountry} />
+      <ExDatasModal isExModalVisible={isExModalVisible} handleCancel={() => setExIsModalVisible(!isExModalVisible)} data={allDataByCountry} />
       <Snackbar open={open} autoHideDuration={6000} onClose={handleClose} anchorOrigin={{ vertical: 'top', horizontal: 'center' }}>
         <Alert onClose={handleClose} severity="error">
           Lütfen Ülke seçiniz
@@ -120,11 +121,7 @@ export const Country = () => {
           avatar={CountryCode ? <img src={`https://www.countryflags.io/${CountryCode}/shiny/64.png`} /> : <img className="w-header-icon" src={world}></img>}
           action={
             <>
-              <Button style={{ marginTop: '25px' }} onClick={() => setIsModalVisible(!isModalVisible)} danger>
-                Regresyon Analizi
-              </Button>
-              {'  '}
-              <Button style={{ marginTop: '25px' }} onClick={() => setIsModalVisible(!isModalVisible)} type="primary">
+              <Button style={{ marginTop: '25px' }} onClick={() => setExIsModalVisible(!isExModalVisible)} type="primary">
                 Eski veriler
               </Button>
             </>
@@ -190,7 +187,7 @@ export const Country = () => {
         </CardActions>
         <Collapse in={expanded} timeout="auto" unmountOnExit>
           <CardContent>
-            <div style={{ height: 500 }}> {allDataByCountry !== null && <Covid19Cart type="hybrid" data={allDataByCountry} />}</div>
+            <div style={{ height: 700 }}> {allDataByCountry && <Covid19Cart type="hybrid" data={allDataByCountry} />}</div>
           </CardContent>
         </Collapse>
       </Card>
